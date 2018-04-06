@@ -116,15 +116,23 @@ var HTMLDocument = (function (_Component) {
     }
   }, {
     key: 'renderScripts',
-    value: function renderScripts() {
+    value: function renderScripts(scripts) {
       var _this2 = this;
-
-      var scripts = this.props.scripts;
 
       return scripts.map(function (props) {
         var scriptProps = typeof props === 'string' ? { src: props } : props;
         return _this2.renderAsset(_constants.ASSET_TYPES.SCRIPT, scriptProps);
       });
+    }
+  }, {
+    key: 'renderBodyScripts',
+    value: function renderBodyScripts() {
+      return this.renderScripts(this.props.scripts);
+    }
+  }, {
+    key: 'renderHeadScripts',
+    value: function renderHeadScripts() {
+      return this.renderScripts(this.props.headScripts);
     }
   }, {
     key: 'renderUniversalStateScript',
@@ -152,14 +160,15 @@ var HTMLDocument = (function (_Component) {
           ),
           this.renderMetatags(),
           this.renderFavicon(),
-          this.renderStylesheets()
+          this.renderStylesheets(),
+          this.renderHeadScripts()
         ),
         _react2['default'].createElement(
           'body',
           null,
           this.renderChildren(),
           this.renderUniversalStateScript(),
-          this.renderScripts()
+          this.renderBodyScripts()
         )
       );
     }
@@ -175,6 +184,7 @@ HTMLDocument.propTypes = {
   favicon: _propTypes2['default'].string,
   metatags: _propTypes2['default'].array,
   scripts: _propTypes2['default'].array,
+  headScripts: _propTypes2['default'].array,
   stylesheets: _propTypes2['default'].array,
   title: _propTypes2['default'].string,
   universalState: _propTypes2['default'].object
@@ -186,6 +196,7 @@ HTMLDocument.defaultProps = {
   favicon: '',
   metatags: [],
   scripts: [],
+  headScripts: [],
   stylesheets: [],
   title: '',
   universalState: null
